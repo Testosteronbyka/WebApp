@@ -45,7 +45,10 @@ public class ContactController : Controller
             }
         }
     };
-    // GET
+
+    private static int currentId = 3;
+    
+    
     public IActionResult Index()
     {
         return View(_contacts);
@@ -53,15 +56,19 @@ public class ContactController : Controller
     
     public IActionResult Add()
     {
+        
         return View();
     }
-    
+    [HttpPost]
     public IActionResult Add(ContactModel model)
     {
         if (!ModelState.IsValid)
         {
-            return View();
+            return View(model);
         }
-        return View();
+
+        model.Id = ++currentId;
+        _contacts.Add(model.Id, model);
+        return View("Index", _contacts);
     }
 }

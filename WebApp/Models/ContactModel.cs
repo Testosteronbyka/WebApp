@@ -20,7 +20,7 @@ public class ContactModel
     [EmailAddress]
     public string Email { get; set; }
     [Phone]
-    [RegularExpression(pattern:"{\\d}3 {\\d}3 {\\d}3", ErrorMessage = "Wpisz numer wg wzoru: xxx xxx xxx")]
+    [RegularExpression(pattern:"\\d{3} \\d{3} \\d{3}", ErrorMessage = "Wpisz numer wg wzoru: xxx xxx xxx")]
     public string PhoneNumber { get; set; }
     [DataType(DataType.Date)]
     public DateOnly BirthDate { get; set; }
