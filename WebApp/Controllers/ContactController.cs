@@ -1,90 +1,54 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Models.Services;
 
-namespace WebApp.Controllers;
-
-public class ContactController : Controller
+namespace WebApp.Controllers
 {
+    public class ContactController : Controller
+    {
+        private readonly IContactService _contactService;
 
-    private static Dictionary<int, ContactModel> _contacts = new()
-    {
+        public ContactController(IContactService contactService)
         {
-            1,
-            new ContactModel()
-            {
-                Id = 1,
-                FirstName = "Adamo",
-                LastName = "Kus",
-                Email = "adamkus@wsei.edu.pl",
-                PhoneNumber = "333 134 003",
-                BirthDate = new DateOnly(2003, 10, 10)
-            }
-        },
-        {
-            2,
-            new ContactModel()
-            {
-                Id = 2,
-                FirstName = "Michal",
-                LastName = "Glus",
-                Email = "michalglus@wsei.edu.pl",
-                PhoneNumber = "885 267 388",
-                BirthDate = new DateOnly(2005, 3, 22)
-            }
-        },
-        {
-            3,
-            new ContactModel()
-            {
-                Id = 3,
-                FirstName = "Kamil",
-                LastName = "Zdun",
-                Email = "kamilzdun@wsei.edu.pl",
-                PhoneNumber = "578 399 100",
-                BirthDate = new DateOnly(2000, 1, 5)
-            }
-        }
-    };
-
-    private static int currentId = 3;
-    
-    
-    public IActionResult Index()
-    {
-        return View(_contacts);
-    }
-    
-    public IActionResult Add()
-    {
-        
-        return View();
-    }
-    [HttpPost]
-    public IActionResult Add(ContactModel model)
-    {
-        if (!ModelState.IsValid)
-        {
-            return View(model);
+            _contactService = contactService;
         }
 
-        model.Id = ++currentId;
-        _contacts.Add(model.Id, model);
-        return View("Index", _contacts);
-    }
+        public IActionResult Index()
+        {
+            return View(_contactService.GetAll());
+        }
 
-    public IActionResult Delete(int id)
-    {
-        _contacts.Remove(id);
-        return View("Index", _contacts);
-    }
+        public IActionResult Add()
+        {
 
-    public IActionResult Edit()
-    {
-        throw new NotImplementedException();
-    }
+            return View();
+        }
 
-    public IActionResult Details()
-    {
-        throw new NotImplementedException();
+        [HttpPost]
+        public IActionResult Add(ContactModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            _contactService.Add(model);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int id, ContactModel model)
+        {
+            _contactService.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View(_contactService.GetById(id));
+        }
+
+        public IActionResult Details(int id)
+        {
+                return View(_contactService.GetById(id));
+        }
     }
 }
