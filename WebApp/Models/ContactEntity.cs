@@ -28,6 +28,10 @@ public class ContactEntity
     public DateOnly BirthDate { get; set; }
     
     public DateTime Created { get; set; }
+
+    public int OrganizationId { get; set; }
+
+    public OrganizationEntity? Organization { get; set; }
     
     
 }
