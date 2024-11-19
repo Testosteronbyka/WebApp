@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApp.Models;
@@ -18,6 +19,7 @@ namespace WebApp.Controllers
         {
             return View(_contactService.GetAll());
         }
+        [Authorize(Roles = "ADMIN")]
 
         public IActionResult Add()
         {
@@ -32,6 +34,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Add(ContactModel model)
         {
             if (!ModelState.IsValid)
