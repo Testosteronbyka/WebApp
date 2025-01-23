@@ -1,0 +1,49 @@
+﻿@* @model AppSuperheroes.Entities.Superhero *@
+@* *@
+@* @{ *@
+@* ViewData["Title"] = "Edit Superhero"; *@
+@* } *@
+@* *@
+@* <h2>Edit Superhero</h2> *@
+@* *@
+@* <form asp-action="Edit" method="post"> *@
+@*     <input type="hidden" asp-for="Id" /> *@
+@* *@
+@*     <div class="form-group"> *@
+@*         <label asp-for="SuperheroName"></label> *@
+@*         <input asp-for="SuperheroName" class="form-control" /> *@
+@*         <span asp-validation-for="SuperheroName" class="text-danger"></span> *@
+@*     </div> *@
+@* *@
+@*     <div class="form-group"> *@
+@*         <label asp-for="FullName"></label> *@
+@*         <input asp-for="FullName" class="form-control" /> *@
+@*         <span asp-validation-for="FullName" class="text-danger"></span> *@
+@*     </div> *@
+@* *@
+@*     <div class="form-group"> *@
+@*         <label asp-for="GenderId">Gender</label> *@
+@*         <select asp-for="GenderId" class="form-control"> *@
+@*             <option value="">Select Gender</option> *@
+@*             @foreach (var gender in ViewBag.GenderList) *@
+@*             { *@
+@*             <option value="@gender.Id" @(Model.GenderId == gender.Id ? "selected" : string.Empty)>@gender.Gender1</option> *@
+@*             } *@
+@*         </select> *@
+@*         <span asp-validation-for="GenderId" class="text-danger"></span> *@
+@*     </div> *@
+@* *@
+@*     <div class="form-group"> *@
+@*         <label asp-for="AlignmentId">Alignment</label> *@
+@*         <select asp-for="AlignmentId" class="form-control"> *@
+@*             <option value="">Select Alignment</option> *@
+@*             @foreach (var alignment in ViewBag.AlignmentList) *@
+@*             { *@
+@*             <option value="@alignment.Id" @(Model.AlignmentId == alignment.Id ? "selected" : string.Empty)>@alignment.Alignment1</option> *@
+@*             } *@
+@*         </select> *@
+@*         <span asp-validation-for="AlignmentId" class="text-danger"></span> *@
+@*     </div> *@
+@* *@
+@*     <button type="submit" class="btn btn-primary">Save</button> *@
+@* </form> *@
