@@ -1,0 +1,25 @@
+﻿@model AppSuperheroes.Entities.Superpower
+
+@{
+    ViewData["Title"] = "Create Superpower";
+}
+
+<h1>Create New Superpower</h1>
+
+<h4>Superpower</h4>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="PowerName" class="control-label"></label>
+        <input asp-for="PowerName" class="form-control" />
+        <span asp-validation-for="PowerName" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

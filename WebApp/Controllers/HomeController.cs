@@ -23,51 +23,53 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult About() => View();
+    public IActionResult About()
+    {
+        return View();
+    }
 
     public IActionResult Calculator(Operator? op, double? x, double? y = null)
     {
-        // var x = double.Parse(Request.Query["x"]);
-        // var y = double.Parse(Request.Query["y"]);
         // var op = Request.Query["op"];
+        // var x = double.Parse(Request.Query["x"]!);
+        // var y = double.Parse(Request.Query["y"]!);
+        if (x is null || y is null && op != Operator.SIN)
+        {
+            ViewBag.ErrorMessage = "Niepoprawny format liczby w parametrze x lub y";
+            return View("CalculatorError");
+        }
 
         if (op == null)
         {
-            ViewBag.ErrorMessage("Niepoprawny operator");
+            ViewBag.ErrorMessage = "Niepoprawny operator";
             return View("CalculatorError");
         }
-
-        if (x == null || (y == null && op != Operator.SIN))
-        {
-            ViewBag.ErrorMessage("Nieprawidłowy parametr liczby x lub y");
-            return View("CalculatorError");
-        }
+        //
+        // if (op == Operator.SIN)
+        // {
+        //     y = null;
+        // }
 
         switch (op)
         {
             case Operator.ADD:
             {
-                ViewBag.Result = x + y;
+                ViewBag.Result = x + y ?? 0;
                 break;
             }
             case Operator.SUB:
             {
-                ViewBag.Result = x - y;
+                ViewBag.Result = x - y ?? 0;
                 break;
             }
             case Operator.MUL:
             {
-                ViewBag.Result = x * y;
+                ViewBag.Result = x * y ?? 0;
                 break;
             }
             case Operator.DIV:
             {
-                if (y == 0)
-                {
-                    ViewBag.ErrorMessage("Nie mozna dzielic przez 0");
-                    return View("CalculatorError");
-                }
-                ViewBag.Result = x / y;
+                ViewBag.Result = x / y ?? 0;
                 break;
             }
             case Operator.POW:
@@ -80,8 +82,13 @@ public class HomeController : Controller
                 ViewBag.Result = Math.Sin((double)x);
                 break;
             }
+            // default:
+            // {
+            //     ViewBag.ErrorMessage = "Nieznany operator";
+            //     return View("CalculatorError");
+            // }
         }
-        
+
         return View();
     }
 
@@ -95,4 +102,14 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+}
+
+public enum Operator
+{
+    ADD,
+    SUB,
+    MUL,
+    DIV,
+    POW,
+    SIN
 }

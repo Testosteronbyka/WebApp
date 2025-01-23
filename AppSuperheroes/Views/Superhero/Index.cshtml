@@ -1,0 +1,69 @@
+﻿@model IEnumerable<AppSuperheroes.Entities.Superhero>
+
+@{
+    ViewData["Title"] = "Superheroes List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a href="@Url.Action("Create", "Superhero")" class="btn btn-primary mb-3">Add New Superhero</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Superhero Name</th>
+        <th>Full Name</th>
+        <th>Gender</th>
+        <th>Alignment</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var superhero in Model)
+    {
+        <tr>
+            <td>@superhero.SuperheroName</td>
+            <td>@superhero.FullName</td>
+            <td>@superhero.Gender?.Gender1</td>
+            <td>@superhero.Alignment?.Alignment1</td>
+            <td>
+                <!-- Przycisk Edit -->
+                <a href="@Url.Action("Edit", "Superhero", new { id = superhero.Id })" class="btn btn-info btn-sm">Edit</a>
+                
+                <!-- Przycisk Delete -->
+                <form asp-action="Delete" asp-controller="Superhero" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@superhero.Id" />
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this superhero?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<div class="pagination">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <a href="@Url.Action("Index", new { page = 1, size = ViewBag.PageSize })" class="btn btn-light">First</a>
+        <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, size = ViewBag.PageSize })" class="btn btn-light">Previous</a>
+    }
+
+    @for (int i = Math.Max(1, ViewBag.CurrentPage - 2); i <= Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2); i++)
+    {
+        if (i == ViewBag.CurrentPage)
+        {
+            <span class="btn btn-primary">@i</span>
+        }
+        else
+        {
+            <a href="@Url.Action("Index", new { page = i, size = ViewBag.PageSize })" class="btn btn-light">@i</a>
+        }
+    }
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <a href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, size = ViewBag.PageSize })" class="btn btn-light">Next</a>
+        <a href="@Url.Action("Index", new { page = ViewBag.TotalPages, size = ViewBag.PageSize })" class="btn btn-light">Last</a>
+    }
+</div>
+
